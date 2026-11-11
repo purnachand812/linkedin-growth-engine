@@ -1,0 +1,155 @@
+{
+  "full_name": "Alex Rivera",
+  "preferred_name": "Alex Rivera",
+  "title": "Senior AI Systems Engineer & Distributed Architect",
+  "location": "Berlin, Germany",
+  "residency_status": "Eligible to work globally / Resident in EU",
+  "email": "alex.rivera@example.com",
+  "phone": "+49 150 0000000",
+  "linkedin_url": "https://linkedin.com/in/alex-rivera-tech",
+  "github_url": "https://github.com/alexrivera",
+  "profile_summary": "Senior Systems Engineer with expertise in distributed architectures, LLM inference pipelines, and high-throughput backend systems. Experienced in scaling microservices, optimizing low-latency database queries, and designing autonomous AI pipelines. Passionate about open-source engineering, containerization, and reliable systems.",
+  "employment_preference": {
+    "types": [
+      "Full-Time (Vollzeit)",
+      "Contract / Freelance",
+      "Part-Time (Teilzeit)"
+    ],
+    "hours_per_week": "40 hrs/week",
+    "locations": [
+      "Berlin, Germany",
+      "Remote",
+      "Hybrid"
+    ]
+  },
+  "target_roles": [
+    "AI Systems Engineer",
+    "Senior Software Engineer",
+    "Distributed Systems Architect",
+    "Backend Engineer (Python / Go)",
+    "Machine Learning Infrastructure Engineer",
+    "Cloud & DevOps Architect"
+  ],
+  "work_experience": [
+    {
+      "company": "Apex Distributed Systems",
+      "locality": "Berlin, Germany",
+      "position": "Senior AI & Systems Engineer",
+      "period": "2023 – Present",
+      "sector": "Cloud Infrastructure & High-Performance AI",
+      "responsibilities": [
+        "Architected multi-agent LLM inference pipelines with sub-200ms latency using Python, FastAPI, and Redis caching.",
+        "Engineered scalable distributed database pipelines in PostgreSQL and ClickHouse processing 50M+ events daily.",
+        "Spearheaded automated CI/CD and deployment workflows in Docker & Kubernetes, reducing deployment cycle times by 65%."
+      ]
+    },
+    {
+      "company": "DataVelocity Labs",
+      "locality": "Munich, Germany",
+      "position": "Software & Data Engineer",
+      "period": "2021 – 2023",
+      "sector": "Enterprise Analytics & Scalable Backends",
+      "responsibilities": [
+        "Optimized 25+ critical SQL database queries and implemented caching strategies, cutting 95th percentile query latency from 900ms to 280ms.",
+        "Built resilient microservices architecture in Go and Python with gRPC communication and zero downtime deployments.",
+        "Automated multi-tenant authorization (RBAC) and security audit compliance across all client-facing APIs."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "M.Sc. Computer Science / Data Engineering",
+      "eqf_level": "EQF Level 7",
+      "institution": "Technical University of Munich / International Partner",
+      "location": "Germany",
+      "year": "2019 – 2021",
+      "status": "Degree Completed",
+      "module_pillars": [
+        "Distributed Systems Architecture",
+        "Machine Learning Systems",
+        "Cloud Computing & Virtualization",
+        "High-Performance Database Systems"
+      ]
+    }
+  ],
+  "verified_projects": [
+    {
+      "name": "Autonomous Vision Browser Agent",
+      "description": "Headless web navigation system using Playwright and coordinate bounding box token compression.",
+      "impact": "Slashed LLM token costs by 85% compared to raw DOM tree parsing.",
+      "technologies": [
+        "Python",
+        "Playwright",
+        "Vision Models",
+        "Docker",
+        "FastAPI"
+      ]
+    },
+    {
+      "name": "High-Throughput Vector Pipeline",
+      "description": "Distributed embedding and semantic search system supporting parallel inference.",
+      "impact": "Achieved 12,000 requests/sec throughput on self-hosted GPU workers.",
+      "technologies": [
+        "Python",
+        "PyTorch",
+        "Redis",
+        "PostgreSQL",
+        "gRPC"
+      ]
+    },
+    {
+      "name": "Cloud Native Metrics Radar",
+      "description": "Real-time telemetry and anomaly detection dashboard for microservice clusters.",
+      "impact": "Reduced mean time to resolution (MTTR) by 45% across production incidents.",
+      "technologies": [
+        "Go",
+        "Prometheus",
+        "Grafana",
+        "Docker",
+        "PostgreSQL"
+      ]
+    }
+  ],
+  "skills": {
+    "languages": [
+      "Python",
+      "Go",
+      "SQL",
+      "TypeScript",
+      "Bash"
+    ],
+    "machine_learning": [
+      "PyTorch",
+      "Hugging Face",
+      "FastAPI",
+      "Triton",
+      "Transformers",
+      "Vector DBs"
+    ],
+    "cloud_and_databases": [
+      "PostgreSQL",
+      "Redis",
+      "Docker",
+      "Kubernetes",
+      "AWS",
+      "GCP",
+      "ClickHouse"
+    ],
+    "core_competencies": [
+      "Distributed Systems",
+      "Microservices Architecture",
+      "Performance Profiling",
+      "CI/CD Automation"
+    ]
+  },
+  "languages": [
+    {
+      "language": "English",
+      "level": "C2 (Proficient / Fluent)"
+    },
+    {
+      "language": "German",
+      "level": "B1/B2 (Working Proficiency)"
+    }
+  ]
+}

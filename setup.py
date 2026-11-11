@@ -188,6 +188,28 @@ HOST=127.0.0.1
     except Exception as e:
         print(f"⚠️ Initial seed note: {e}")
 
+    # Seed master resume profile & jobs radar
+    print("\nInitializing Master Resume profile and Jobs Radar...")
+    try:
+        p_master_file = BASE_DIR / "profile_master.json"
+        p_master_example = BASE_DIR / "profile_master.json.example"
+        if not p_master_file.exists() and p_master_example.exists():
+            with open(p_master_example, "r", encoding="utf-8") as f:
+                p_obj = json.load(f)
+            p_obj["full_name"] = profile_data["full_name"]
+            p_obj["preferred_name"] = profile_data["full_name"]
+            p_obj["title"] = profile_data["headline"]
+            p_obj["location"] = profile_data["location"]
+            with open(p_master_file, "w", encoding="utf-8") as f:
+                json.dump(p_obj, f, indent=2)
+            print("✓ Generated profile_master.json for ATS resume tailor.")
+
+        from engine.jobs import jobs_radar
+        jobs_radar.refresh_job_radar()
+        print("✓ Initialized Jobs Radar with active engineering opportunities.")
+    except Exception as e:
+        print(f"⚠️ Jobs initialization note: {e}")
+
     print("""
 ================================================================================
   🎉 SETUP COMPLETE! Your LinkedIn Automation Studio is Ready!

@@ -20,6 +20,7 @@ sys.path.insert(0, str(BASE_DIR))
 load_dotenv(BASE_DIR / ".env")
 
 from engine import publisher, detector
+from engine.jobs import jobs_radar, resume_tailor, cover_letter_generator
 
 CONFIG_FILE = BASE_DIR / "config.json"
 CONFIG_EXAMPLE = BASE_DIR / "config.json.example"
@@ -88,12 +89,39 @@ class WhiteLabelHandler(SimpleHTTPRequestHandler):
                 self.send_error(404, "Visual not found")
                 return
 
+        if path.startswith("/resumes/"):
+            file_name = path.replace("/resumes/", "")
+            target_file = BASE_DIR / "resumes" / file_name
+            if target_file.exists():
+                self.send_response(200)
+                content_type = "application/pdf" if file_name.endswith(".pdf") else "text/html; charset=utf-8"
+                self.send_header("Content-Type", content_type)
+                self.send_header("Content-Length", str(target_file.stat().st_size))
+                self.end_headers()
+                with open(target_file, "rb") as f:
+                    self.wfile.write(f.read())
+                return
+            else:
+                self.send_error(404, "Resume file not found")
+                return
+
         if path == "/api/status":
             self.handle_get_status()
         elif path == "/api/profile":
             self.send_json(load_config())
         elif path == "/api/queue":
             self.handle_get_queue()
+        elif path == "/api/jobs":
+            self.send_json(jobs_radar.get_radar_jobs())
+        elif path == "/api/jobs/profile":
+            pfile = BASE_DIR / "profile_master.json"
+            pfile_ex = BASE_DIR / "profile_master.json.example"
+            target = pfile if pfile.exists() else pfile_ex
+            if target.exists():
+                with open(target, "r", encoding="utf-8") as f:
+                    self.send_json(json.load(f))
+            else:
+                self.send_json({})
         elif path == "/api/linkedin/auth-url":
             self.send_json({"auth_url": publisher.get_auth_url()})
         elif path == "/api/linkedin/callback":
@@ -125,6 +153,12 @@ class WhiteLabelHandler(SimpleHTTPRequestHandler):
             self.handle_post_candidate_save(data)
         elif path == "/api/profile":
             self.handle_post_profile(data)
+        elif path == "/api/jobs/refresh":
+            self.handle_post_jobs_refresh(data)
+        elif path == "/api/jobs/generate-packet":
+            self.handle_post_jobs_generate_packet(data)
+        elif path == "/api/jobs/profile":
+            self.handle_post_jobs_profile(data)
         else:
             self.send_error(404, "API route not found")
 
@@ -344,6 +378,54 @@ class WhiteLabelHandler(SimpleHTTPRequestHandler):
         with open(CONFIG_FILE, "w", encoding="utf-8") as f:
             json.dump(cfg, f, indent=2)
         self.send_json({"success": True, "config": cfg})
+
+    def handle_post_jobs_refresh(self, data):
+        try:
+            jobs = jobs_radar.refresh_job_radar()
+            self.send_json({"success": True, "count": len(jobs), "jobs": jobs})
+        except Exception as e:
+            self.send_json({"success": False, "error": str(e)}, code=500)
+
+    def handle_post_jobs_generate_packet(self, data):
+        try:
+            jid = data.get("job_id")
+            job_info = data.get("job_info")
+            if not job_info and jid:
+                radar = jobs_radar.get_radar_jobs()
+                for j in radar.get("jobs", []):
+                    if j.get("id") == jid:
+                        job_info = j
+                        break
+            if not job_info:
+                job_info = {
+                    "id": jid or "job-custom",
+                    "title": "Systems Engineer",
+                    "company": "Tech Enterprise",
+                    "tech_stack": ["Python", "Distributed Systems", "Cloud"]
+                }
+
+            res = resume_tailor.generate_tailored_resume(job_info, make_pdf=True)
+            cov = cover_letter_generator.generate_tailored_cover_letter(job_info, make_pdf=True)
+
+            self.send_json({
+                "success": True,
+                "job_id": job_info.get("id"),
+                "resume_html": res["html_url"],
+                "resume_pdf": res.get("pdf_url"),
+                "cover_letter_html": cov["html_url"],
+                "cover_letter_pdf": cov.get("pdf_url")
+            })
+        except Exception as e:
+            self.send_json({"success": False, "error": str(e)}, code=500)
+
+    def handle_post_jobs_profile(self, data):
+        try:
+            pfile = BASE_DIR / "profile_master.json"
+            with open(pfile, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=2)
+            self.send_json({"success": True, "profile": data})
+        except Exception as e:
+            self.send_json({"success": False, "error": str(e)}, code=500)
 
     def handle_oauth_callback(self, query_str):
         params = parse_qs(query_str)

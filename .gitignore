@@ -12,12 +12,13 @@ ENV/
 # Secrets & Local Configurations
 .env
 config.json
+profile_master.json
 credentials.json
 token.json
 *.pem
 *.key
 
-# Local Data, Logs & Database State
+# Local Data, Logs & Generated Resumes
 history/daemon_status.json
 history/comment_engagement_log.json
 history/external_comments_log.json
@@ -28,6 +29,8 @@ history/analytics_matrix.json
 history/eu_reach_learnings.json
 history/publishing_log.json
 history/credentials.json
+resumes/*
+!resumes/.gitkeep
 
 # Visual Assets Temporary Storage
 visuals/*.tmp

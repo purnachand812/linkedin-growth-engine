@@ -31,6 +31,9 @@
         <button class="nav-btn" onclick="switchTab('studio')">
           <span class="icon">&#9998;</span> Post Studio
         </button>
+        <button class="nav-btn" onclick="switchTab('jobs')">
+          <span class="icon">&#128188;</span> Jobs Radar (<span id="stat-jobs-count">0</span>)
+        </button>
         <button class="nav-btn" onclick="switchTab('settings')">
           <span class="icon">&#9881;</span> Profile & Settings
         </button>
@@ -147,6 +150,24 @@
         <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end;">
           <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
         </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: AUTONOMOUS JOBS RADAR & ATS RESUMES -->
+    <section id="tab-jobs" class="tab-content">
+      <div class="section-header">
+        <div>
+          <h2>Autonomous Jobs Radar & ATS Resumes</h2>
+          <p class="subtitle">Real-time engineering job discovery with 1-click tailored 2-page ATS resumes and custom cover letters.</p>
+        </div>
+        <div>
+          <button class="btn btn-primary" id="refresh-radar-btn" onclick="refreshJobRadar()">
+            &#8635; Scrape &amp; Refresh Radar
+          </button>
+        </div>
+      </div>
+      <div class="queue-grid" id="jobs-radar-container">
+        <!-- Rendered by app.js -->
       </div>
     </section>
   </main>

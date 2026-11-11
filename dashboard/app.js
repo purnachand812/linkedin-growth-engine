@@ -9,6 +9,8 @@ const state = {
   status: {},
   activeCandidates: [],
   archivedCandidates: [],
+  jobs: [],
+  tailoredPackets: {},
   currentFilter: 'ALL',
   activeStudioCandidateId: null,
   lastStudioScore: null
@@ -34,7 +36,8 @@ async function refreshAll() {
   await Promise.all([
     fetchProfile(),
     fetchStatus(),
-    fetchQueue()
+    fetchQueue(),
+    fetchJobsRadar()
   ]);
 }
 
@@ -154,6 +157,156 @@ async function fetchQueue() {
     renderArchivedQueue();
   } catch (err) {
     console.error('Failed to load queue:', err);
+  }
+}
+
+async function fetchJobsRadar() {
+  try {
+    const res = await fetch('/api/jobs');
+    if (!res.ok) return;
+    const data = await res.json();
+    state.jobs = data.jobs || [];
+
+    const jobsCountEl = document.getElementById('stat-jobs-count');
+    if (jobsCountEl) jobsCountEl.textContent = state.jobs.length;
+
+    renderJobsRadar();
+  } catch (err) {
+    console.error('Failed to load jobs radar:', err);
+  }
+}
+
+function renderJobsRadar() {
+  const container = document.getElementById('jobs-radar-container');
+  if (!container) return;
+
+  if (state.jobs.length === 0) {
+    container.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border-color);">
+        <p style="font-size: 1.1rem; font-weight: 600; color: var(--text-dim); margin-bottom: 0.5rem;">No jobs discovered yet.</p>
+        <p style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 1rem;">Click "Scrape & Refresh Radar" to discover open positions matching your target roles.</p>
+        <button class="btn btn-primary btn-sm" onclick="refreshJobRadar()">&#8635; Scrape Live Opportunities</button>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = state.jobs.map(j => {
+    const packet = state.tailoredPackets[j.id];
+    const techPills = (j.tech_stack || []).map(t =>
+      `<span style="font-size: 0.72rem; background: rgba(56, 189, 248, 0.1); color: var(--accent-cyan); padding: 2px 6px; border-radius: 4px; font-weight: 600;">${escapeHtml(t)}</span>`
+    ).join(' ');
+
+    const packetLinks = packet ? `
+      <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 0.5rem; padding: 0.5rem; background: rgba(16, 185, 129, 0.08); border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.25);">
+        <span style="font-size: 0.75rem; font-weight: 700; color: var(--accent-green); width: 100%;">Tailored Application Packet Ready:</span>
+        <a href="${packet.resume_html}" target="_blank" class="btn btn-secondary btn-sm" style="font-size: 0.75rem;">&#128196; Resume (HTML)</a>
+        ${packet.resume_pdf ? `<a href="${packet.resume_pdf}" target="_blank" class="btn btn-secondary btn-sm" style="font-size: 0.75rem;">&#128196; Resume (PDF)</a>` : ''}
+        <a href="${packet.cover_letter_html}" target="_blank" class="btn btn-secondary btn-sm" style="font-size: 0.75rem;">&#9993; Letter (HTML)</a>
+        ${packet.cover_letter_pdf ? `<a href="${packet.cover_letter_pdf}" target="_blank" class="btn btn-secondary btn-sm" style="font-size: 0.75rem;">&#9993; Letter (PDF)</a>` : ''}
+      </div>
+    ` : '';
+
+    return `
+      <div class="candidate-card" id="job-card-${j.id}">
+        <div>
+          <div class="card-top">
+            <span style="font-size: 0.72rem; font-weight: 700; background: rgba(255, 255, 255, 0.06); padding: 3px 8px; border-radius: 4px; color: var(--text-dim);">${escapeHtml(j.source || 'Tech Radar')}</span>
+            <span class="card-status-badge status-approved" style="font-size: 0.75rem;">${j.match_score || 92}% Match</span>
+          </div>
+
+          <h4 class="card-title" style="margin-bottom: 2px;">${escapeHtml(j.title)}</h4>
+          <div style="font-size: 0.85rem; font-weight: 600; color: var(--accent-cyan); margin-bottom: 4px;">${escapeHtml(j.company)}</div>
+          <div class="card-beat" style="margin-bottom: 0.75rem;">&#128205; ${escapeHtml(j.location || 'Remote')} &bull; <span style="color: var(--text-dim);">${escapeHtml(j.posted_ago || 'Recently')}</span></div>
+
+          <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 0.75rem;">
+            ${techPills}
+          </div>
+
+          ${packetLinks}
+        </div>
+
+        <div class="card-footer-actions">
+          <a href="${j.url || '#'}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">
+            &#8599; View Job Post
+          </a>
+          <button class="btn btn-primary btn-sm" id="btn-tailor-${j.id}" onclick="generateApplicationPacket('${j.id}')">
+            &#9881; Tailor Resume &amp; Letter
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+async function refreshJobRadar() {
+  const btn = document.getElementById('refresh-radar-btn');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '&#8987; Scraping Opportunities...';
+  }
+
+  showToast('Scraping open positions matching your target roles...', 'info');
+
+  try {
+    const res = await fetch('/api/jobs/refresh', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({})
+    });
+
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showToast(`✓ Discovered ${data.count} active job opportunities!`, 'success');
+      state.jobs = data.jobs || [];
+      const jobsCountEl = document.getElementById('stat-jobs-count');
+      if (jobsCountEl) jobsCountEl.textContent = state.jobs.length;
+      renderJobsRadar();
+    } else {
+      showToast('Scraper finished with fallback opportunities.', 'info');
+      await fetchJobsRadar();
+    }
+  } catch (err) {
+    showToast(`Radar error: ${err.message}`, 'error');
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = '&#8635; Scrape &amp; Refresh Radar';
+    }
+  }
+}
+
+async function generateApplicationPacket(jobId) {
+  const btn = document.getElementById(`btn-tailor-${jobId}`);
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = 'Tailoring Packet...';
+  }
+
+  showToast(`Generating custom ATS resume and cover letter for position...`, 'info');
+
+  try {
+    const res = await fetch('/api/jobs/generate-packet', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ job_id: jobId })
+    });
+
+    const data = await res.json();
+    if (res.ok && data.success) {
+      state.tailoredPackets[jobId] = data;
+      showToast('✓ Tailored ATS Resume & Cover Letter created!', 'success');
+      renderJobsRadar();
+    } else {
+      showToast(`Packet generation failed: ${data.error || 'Unknown'}`, 'error');
+    }
+  } catch (err) {
+    showToast(`Error: ${err.message}`, 'error');
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = '&#9881; Re-tailor Packet';
+    }
   }
 }
 

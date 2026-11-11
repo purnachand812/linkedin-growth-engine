@@ -25,6 +25,7 @@ Run it locally with the included real-time dashboard or deploy it 100% serverles
   5. **Pragmatic Skepticism**: Enforces real-world trade-offs, gotchas, and test declaration.
 - **Autonomous Timezone-Aware Scheduler**: Dispatches approved drafts strictly during prime-time audience windows (e.g., Morning Standup, Midday Catchup) with strict daily rate limits.
 - **Canva Comparison Graphic Generator**: Uses headless Chromium to compile 1200x675 high-DPI side-by-side architecture benchmarks.
+- **Autonomous Jobs Radar & ATS Resume Tailor**: Scrapes open engineering positions from LinkedIn and European employment boards without paid recruiter accounts. Analyzes job descriptions against your `profile_master.json`, scores match %, and generates tailored 2-page ATS resumes and custom cover letters in HTML & pixel-perfect vector PDF.
 - **Real-Time Interactive Studio**: Dark-mode glassmorphic dashboard (`http://localhost:3000`) for queue management, draft editing, live quality scoring, and OAuth connection.
 
 ---
@@ -116,8 +117,29 @@ Then open your browser at:
 - **Active Queue Tab**: View all pending drafts, check scores, approve/unapprove, or click **Publish Now** to dispatch immediately.
 - **100% Published Archive Tab**: Live history of all published posts with clickable links directly to LinkedIn.
 - **Post Studio Tab**: Compose or paste custom copy to run real-time 5-check quality scoring and save drafts to the queue.
+- **Jobs Radar Tab**: View real-time technical job openings matching your profile, match scores, and 1-click tailored ATS Resumes & Cover Letters (HTML/PDF).
 - **Settings Tab**: Update your name, initials badge, headline, and target timezone in real time.
 - **Connect LinkedIn Button**: One-click OAuth login to link your personal LinkedIn profile.
+
+---
+
+## 💼 Autonomous Jobs Radar & ATS Resume Tailor
+
+The engine includes an autonomous career module that monitors real-time engineering positions and tailors customized application packets:
+
+1. **Profile Master Template (`profile_master.json.example`)**:
+   - Define your work experience, education, verified projects, skills, and CEFR language proficiencies.
+   - The setup wizard automatically initializes your local `profile_master.json`.
+2. **Multi-Source Job Scraper**:
+   - Scrapes LinkedIn public guest postings and the official Bundesagentur für Arbeit API without requiring paid recruiter accounts.
+   - Filters positions by your target role titles and location.
+3. **1-Click Tailored ATS Resumes**:
+   - Matches the job's required tech stack against your profile.
+   - Dynamically reorganizes and highlights your most relevant projects and skills.
+   - Generates authentic 2-page ATS-compliant resumes exported to both HTML and vector PDF.
+4. **Custom Grounded Cover Letters**:
+   - Generates an individualized cover letter addressing the employer's specific tech stack and challenges.
+   - Exports to clean, printable A4 PDF.
 
 ---
 
