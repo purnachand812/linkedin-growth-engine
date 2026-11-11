@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkedIn Growth Engine | Autonomous Studio</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header Bar -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="branding">
+        <div class="logo-badge" id="header-avatar-badge">AR</div>
+        <div class="branding-text">
+          <h1 id="header-author-name">Technical Author</h1>
+          <p id="header-author-headline">Systems Architect &middot; Autonomous Growth OS</p>
+        </div>
+      </div>
+
+      <nav class="header-nav">
+        <button class="nav-btn active" onclick="switchTab('queue')">
+          <span class="icon">&#9776;</span> Queue (<span id="stat-active-count">0</span>)
+        </button>
+        <button class="nav-btn" onclick="switchTab('archive')">
+          <span class="icon">&#10003;</span> Archive (<span id="stat-archived-count">0</span>)
+        </button>
+        <button class="nav-btn" onclick="switchTab('studio')">
+          <span class="icon">&#9998;</span> Post Studio
+        </button>
+        <button class="nav-btn" onclick="switchTab('settings')">
+          <span class="icon">&#9881;</span> Profile & Settings
+        </button>
+      </nav>
+
+      <div class="header-actions">
+        <div class="status-pill status-disconnected" id="linkedin-status-pill">
+          <span class="pulse-dot"></span> <span id="linkedin-status-text">Disconnected</span>
+        </div>
+        <button class="btn btn-primary btn-sm" id="connect-linkedin-btn" onclick="connectLinkedIn()">
+          Connect LinkedIn
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-layout">
+    <!-- Notifications & Toast -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- TAB 1: ACTIVE QUEUE -->
+    <section id="tab-queue" class="tab-content active">
+      <div class="section-header">
+        <div>
+          <h2>Active Editorial Queue</h2>
+          <p class="subtitle">Review, edit, and approve technical drafts before scheduled dispatch.</p>
+        </div>
+        <div class="filter-group">
+          <button class="filter-btn active" onclick="filterQueue('ALL')">All Active</button>
+          <button class="filter-btn" onclick="filterQueue('APPROVED')">Approved</button>
+          <button class="filter-btn" onclick="filterQueue('WAITING')">Waiting Approval</button>
+        </div>
+      </div>
+      <div class="queue-grid" id="active-queue-container">
+        <!-- Rendered by app.js -->
+      </div>
+    </section>
+
+    <!-- TAB 2: ARCHIVED / PUBLISHED POSTS -->
+    <section id="tab-archive" class="tab-content">
+      <div class="section-header">
+        <div>
+          <h2>100% Published Archive</h2>
+          <p class="subtitle">History of all technical breakdowns dispatched live to LinkedIn.</p>
+        </div>
+      </div>
+      <div class="queue-grid" id="archived-queue-container">
+        <!-- Rendered by app.js -->
+      </div>
+    </section>
+
+    <!-- TAB 3: POST STUDIO & VOICE GATE -->
+    <section id="tab-studio" class="tab-content">
+      <div class="studio-layout">
+        <div class="studio-editor-pane">
+          <h3>Interactive Post Composer</h3>
+          <p class="subtitle">Draft or paste your copy below to run real-time voice & quality scoring.</p>
+          <textarea id="studio-textarea" class="composer-textarea" placeholder="Write or paste your technical breakdown here..." rows="16"></textarea>
+          <div class="studio-actions">
+            <button class="btn btn-secondary" onclick="runStudioDetect()">
+              &#128373; Analyze Voice & Tells
+            </button>
+            <button class="btn btn-primary" onclick="saveStudioCandidate()">
+              &#10003; Save to Queue
+            </button>
+          </div>
+        </div>
+
+        <div class="studio-analysis-pane">
+          <h3>5-Check Quality Gate</h3>
+          <div class="score-card" id="studio-score-card">
+            <div class="score-number" id="studio-score-val">--</div>
+            <div class="score-label" id="studio-score-lbl">Run analysis to score draft</div>
+          </div>
+          <div class="checks-list" id="studio-checks-breakdown">
+            <!-- Rendered by app.js -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: PROFILE & CONFIGURATION -->
+    <section id="tab-settings" class="tab-content">
+      <div class="settings-card">
+        <h3>Profile & Branding Settings</h3>
+        <p class="subtitle">These details dynamically brand all generated Canva graphics and the dashboard header.</p>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="settings-name" class="form-input">
+          </div>
+          <div class="form-group">
+            <label>Initials (Graphic Badge)</label>
+            <input type="text" id="settings-initials" class="form-input" maxlength="3">
+          </div>
+          <div class="form-group full-width">
+            <label>Professional Headline</label>
+            <input type="text" id="settings-headline" class="form-input">
+          </div>
+          <div class="form-group">
+            <label>Location</label>
+            <input type="text" id="settings-location" class="form-input">
+          </div>
+          <div class="form-group">
+            <label>Target Audience Timezone</label>
+            <input type="text" id="settings-timezone" class="form-input">
+          </div>
+          <div class="form-group full-width">
+            <label>Primary Content Focus / Niche</label>
+            <input type="text" id="settings-niche" class="form-input">
+          </div>
+        </div>
+        <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end;">
+          <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
+

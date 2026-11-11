@@ -1,0 +1,48 @@
+{
+  "candidates": [
+    {
+      "id": 1,
+      "topic": "browser-use (Headless Vision-Web Agents & DOM Token Compression)",
+      "beat": "Autonomous Agents & Automation",
+      "score": 96,
+      "human_quality_score": 82.6,
+      "status": "APPROVED",
+      "format": "image-attached",
+      "replaces": "Raw HTML Tree Dumps & High-Cost Cloud Headless Scrapers",
+      "cost": "$0 / MIT Open Source; cuts multi-turn agent token costs by 85%",
+      "test_status": "Tested on local Playwright with Chromium in Docker; not tested on complex multi-factor banking portals yet",
+      "file": "queue/candidates/candidate_1_browser_use.md",
+      "visual": "visuals/visual_browser_use.png"
+    },
+    {
+      "id": 2,
+      "topic": "Unsloth (Fast Open-Weight LLM Fine-Tuning & Custom Triton Kernels)",
+      "beat": "AI Models & Efficient Training",
+      "score": 95,
+      "human_quality_score": 92.6,
+      "status": "APPROVED",
+      "format": "image-attached",
+      "replaces": "Native PyTorch Autograd & High-Cost Multi-GPU Cloud Clusters",
+      "cost": "$0 / Apache 2.0 Open Source; cuts fine-tuning VRAM by up to 80%",
+      "test_status": "Tested on Llama-3-8B and Qwen-2.5 on local 24GB RTX 3090; not tested on 70B models across multi-node InfiniBand clusters yet",
+      "file": "queue/candidates/candidate_2_unsloth.md",
+      "visual": "visuals/visual_unsloth.png"
+    },
+    {
+      "id": 3,
+      "topic": "FastMCP (High-Level Python Framework for Model Context Protocol Servers)",
+      "beat": "Autonomous Agents & Tool Protocols",
+      "score": 95,
+      "human_quality_score": 85.9,
+      "status": "APPROVED",
+      "format": "image-attached",
+      "replaces": "Boilerplate JSON-RPC Protocol Handlers & Proprietary Plugin Frameworks",
+      "cost": "$0 / MIT Open Source; eliminates 200+ lines of low-level MCP wire protocol code",
+      "test_status": "Tested with Claude Desktop and local Python agent clients in Docker; not tested over enterprise reverse proxies with mTLS yet",
+      "file": "queue/candidates/candidate_3_fastmcp.md",
+      "visual": "visuals/visual_fastmcp_sdk.png"
+    }
+  ],
+  "updated_at": "",
+  "auto_approve_enabled": true
+}

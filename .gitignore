@@ -1,0 +1,43 @@
+# Python & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+
+# Secrets & Local Configurations
+.env
+config.json
+credentials.json
+token.json
+*.pem
+*.key
+
+# Local Data, Logs & Database State
+history/daemon_status.json
+history/comment_engagement_log.json
+history/external_comments_log.json
+history/verified_social_metrics.json
+history/weekly_audit_report.json
+history/weekly_audit_report.html
+history/analytics_matrix.json
+history/eu_reach_learnings.json
+history/publishing_log.json
+history/credentials.json
+
+# Visual Assets Temporary Storage
+visuals/*.tmp
+visuals/*.svg.png
+
+# Node & Editor Artifacts
+node_modules/
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+

@@ -1,0 +1,66 @@
+{
+  "profile": {
+    "full_name": "Alex Rivera",
+    "initials": "AR",
+    "headline": "Senior AI Systems Engineer & Distributed Systems Architect",
+    "location": "Berlin, Germany",
+    "avatar_filename": "",
+    "bio_thesis": "Designing autonomous agent systems and production inference infrastructure."
+  },
+  "content_strategy": {
+    "primary_niche": "AI Systems, LLM Inference & Open-Source Engineering",
+    "target_audience": "Founders, Engineering Leaders, and Technical Practitioners",
+    "target_timezone": "Europe/Berlin",
+    "max_posts_per_day": 2,
+    "posting_windows": [
+      {
+        "name": "Morning Standup (Prime)",
+        "start": "08:30",
+        "end": "10:00"
+      },
+      {
+        "name": "Midday Tech Catchup",
+        "start": "12:00",
+        "end": "13:30"
+      },
+      {
+        "name": "Evening Engineering Wrap",
+        "start": "17:00",
+        "end": "18:30"
+      }
+    ]
+  },
+  "voice_rules": {
+    "forbid_em_dashes": true,
+    "forbidden_buzzwords": [
+      "delve",
+      "leverage",
+      "game-changer",
+      "revolutionary",
+      "unlock",
+      "landscape",
+      "groundbreaking",
+      "transformative",
+      "paradigm shift",
+      "unprecedented",
+      "seamless",
+      "cutting-edge",
+      "robust",
+      "crucial",
+      "testament to",
+      "let that sink in",
+      "here's the thing"
+    ],
+    "require_hardware_metrics": true,
+    "require_tested_declaration": true,
+    "enforce_dry_contrarian_hook": true
+  },
+  "visuals": {
+    "theme": "dark_modern",
+    "primary_gradient": "cyan",
+    "width": 1080,
+    "height": 1350,
+    "ratio": "4:5"
+  }
+}
+
